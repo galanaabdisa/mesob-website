@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MESOB Agaro - One Stop Service Center</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(to right, #2c3e50, #4a6491);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .language-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+        
+        .lang-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .lang-btn.oromo {
+            background: #ffcc00;
+            color: #000;
+        }
+        
+        .lang-btn.amharic {
+            background: #006400;
+            color: white;
+        }
+        
+        .lang-btn.english {
+            background: #0047ab;
+            color: white;
+        }
+        
+        .lang-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .main-content {
+            padding: 30px;
+            display: none;
+        }
+        
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .search-box {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .organizations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .org-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #e9ecef;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .org-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+        
+        .org-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .services-list {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .service-item {
+            padding: 10px;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .service-item:last-child {
+            border-bottom: none;
+        }
+        
+        .service-item::before {
+            content: "✓";
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .counter {
+            background: #667eea;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: inline-block;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #2c3e50;
+            color: white;
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .organizations-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .language-buttons {
+                flex-direction: column;
+            }
+            
+            .lang-btn {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏛️ MESOB Agaro</h1>
+            <p>One Stop Service Center</p>
+            <p>ጠቅላላ አገልግሎት ማዕከል | Iddoo Tajaajila Waliigala</p>
+        </div>
+        
+        <!-- Language Selection -->
+        <div class="language-buttons" id="languageSection">
+            <button class="lang-btn oromo" onclick="selectLanguage('or')">
+                <span>🇪🇹</span> Afaan Oromoo
+            </button>
+            <button class="lang-btn amharic" onclick="selectLanguage('am')">
+                <span>🇪🇹</span> አማርኛ
+            </button>
+            <button class="lang-btn english" onclick="selectLanguage('en')">
+                <span>🇬🇧</span> English
+            </button>
+        </div>
+        
+        <!-- Main Content (hidden by default) -->
+        <div class="main-content" id="mainContent">
+            <button class="back-btn" onclick="goBack()">
+                ← <span id="backText">Back</span>
+            </button>
+            
+            <div id="organizationsList">
+                <h2 id="orgTitle">Organizations at MESOB</h2>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search organization..." onkeyup="searchOrganizations()">
+                </div>
+                <div class="organizations-grid" id="orgGrid">
+                    <!-- Organizations will be loaded here -->
+                </div>
+            </div>
+            
+            <div id="servicesView" style="display: none;">
+                <h2 id="serviceTitle">Services at MESOB</h2>
+                <div class="counter" id="serviceCount">0 services</div>
+                <div class="services-list" id="servicesList">
+                    <!-- Services will be loaded here -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2026 MESOB Agaro - All services available at One Stop Service Center</p>
+            <p>Contact: Agaro City Administration | Developed by Computer Science Department, Jimma University</p>
+        </div>
+    </div>
+
+    <script>
+        // Language texts
+        const translations = {
+            or: {
+                welcome: "MESOB Agaro -  Tajaajila Iddoo tokko",
+                orgTitle: "🏢 Dhaabbileen MESOB",
+                searchPlaceholder: "Dhaabbataa barbaadi...",
+                back: "Deebi'i",
+                servicesTitle: "Tajaajila MESOB",
+                noServices: "Tajaajila hin argamne",
+                servicesCount: "tajaajila"
+            },
+            am: {
+                welcome: "MESOB አጋሮ - ጠቅላላ አገልግሎት ማዕከል",
+                orgTitle: "🏢 በMESOB ያሉ ድርጅቶች",
+                searchPlaceholder: "ድርጅት ፈልግ...",
+                back: "ተመለስ",
+                servicesTitle: "በMESOB የሚሰጡ አገልግሎቶች",
+                noServices: "አገልግሎቶች አልተገኙም",
+                servicesCount: "አገልግሎቶች"
+            },
+            en: {
+                welcome: "MESOB Agaro - One Stop Service Center",
+                orgTitle: "🏢 Organizations at MESOB",
+                searchPlaceholder: "Search organization...",
+                back: "Back",
+                servicesTitle: "Services at MESOB",
+                noServices: "No services found",
+                servicesCount: "services"
+            }
+        };
+
+        // All organizations data
+        const organizations = [
+            {
+                id: 1,
+                name_or: "W/Kantiibaa /Bulcinnsa",
+                name_am: "ከንቲባና  ጽ/ቤት",
+                name_en: "Mayor office",
+                services_or: ["Iyyannoo fi komii uummataa keessummeessuu", "Xalayaa deggarsa adda addaa kennuu"],
+                services_am: ["የህዝብ ጥያቄና ቅሬታ ማስተናገድ", "ተለያዩ የድጋፍ ደብዳቤዎች መስጠት"],
+                services_en: ["Accommodate public complaints", "Providing various support letters"]
+            },
+            {
+                id: 2,
+                name_or: "PSMQN /TQO/",
+                name_am: "ፒ.ኤስ.ኤም.ቁ.ኤን /ቲ.ቀ.ኦ/",
+                name_en: "PSMQN /TQO/",
+                services_or: ["Komii hojjetaa mootummaa keessummeessuu", "Xalayaa deggarsa adda addaa kennuu", "Heyyama gahuumsa ogeessota daldala Meeshaalee elektirooniksii kennuu fi haaromsuu", "Heyyama gahuumsa ogeessota suphaa Meeshaalee elektirooniksii (hardware and software) Kennuu fi Haaromsuu", "Heyyama gahuumsa ogeessota leenjii suphaa Meeshaalee elektirooniksii fi dandeettii kompitaraa (hardware and software) Kennuu fi Haaromsuu", "Hayyama diriirsa bu'uuraalee teknolojii qunnamtii odeeffannoo (fkn Diriirsa network fi cctv kaameraa) hojjachuu barbaadaniif kennuu fi haaromsuu"]
+            },
+            {
+                id: 3,
+                name_or: "Lafa",
+                name_am: "መሬት",
+                name_en: "Land Office",
+                services_or: ["Gaaffii lafaa simachuu", "Waliigaltee liizii galchuu", "Galmeessaa fi kenna Kaartaa itti fayyadama lafaa", "Bakka bu'ummaa mirkaneessuun kuusaa dhuunfaan walqabsiisuu", "Galmeessaa fi Kenna Kaartaa Kaadastaraa", "Dhorka Baankii fi mana murtii galmeessuu fi haquu (Kadaastara)", "Qabiyyee fi sirna qabiyyee lafaa adda baasuu, walitti makuu fi kaasuu (Kadaastara)", "Jijjiirraa maqaa raawwachuu (Kaadr.)", "Wabummaa galmeessuun kuusaa dhuunfaan walqabsiisuu (Kaadr.)"]
+            },
+            {
+                id: 4,
+                name_or: "Galmeessa Siivilii",
+                name_am: "የሲቪል ምዝገባ",
+                name_en: "Civil Registration",
+                services_or: ["Galmeessa sanadoota Siivilii", "Mirkaneessa sanadoota Siivilii"]
+            },
+            {
+                id: 5,
+                name_or: "CHUO",
+                name_am: "ሲ.ኤች.ዩ.ኦ",
+                name_en: "CHUO",
+                services_or: ["Hoji barbaaddota galmeessuu", "Waldaalee IMX gurmaa'aniif qaama seerummaa kennuu", "Xalayaa deeggarsaa Waldaalee IMX'f walitti hidhamiinsa gabaa uumuu", "Waldaaleen IMX Paakeejiiwwan deggersaa fi hayyama daldalaa akka argatan Xalayaa kennuu", "Waldaalee invastimantiitti ce'aniifi ce'umsa interpraayizootaaf waraqaa ragaa kennu"]
+            },
+            {
+                id: 6,
+                name_or: "Hojjetaa fi Hawaasummaa",
+                name_am: "ሥራ እና ማህበራዊ",
+                name_en: "Labor and Social Affairs",
+                services_or: ["Kaardii hojii dhabdummaa kennuu", "Hayyama waldaalee hawaasaa adda addaa kennuu fi haaromsuu", "Hayyama ejensii hojjetaafi hojjechiisaa biyya keessaa walquunnamsiisuu kennuu ,haaromsuu,haquu fi kan bade bakka buusuu", "Waliigaltee qacarrii ogeessota profeeshinaalee dhaabbilee dhuunfaa mirkaneessuu"]
+            },
+            {
+                id: 7,
+                name_or: "Daldala",
+                name_am: "ንግድ",
+                name_en: "Trade",
+                services_or: ["Hayyama daldalaa haaraa galmeessuu", "Hayyama daldalaa kennuu, haaromsuu, haquu fi fooyyessuu", "Moggaasa maqaa daldalaa kennuu", "Xalayaa deggarsaa adda addaa fi Walitti hidhamiinsa gabaa omisha qonnaafi induustirii uumuu kennuu"]
+            },
+            {
+                id: 8,
+                name_or: "Konistiraakshinii",
+                name_am: "ኮንስትራክሽን",
+                name_en: "Construction",
+                services_or: ["Kenna fi haaromsa gahumsaa ogummaa ogeessotaa, waldaalee, dhaabilee fi gorsitotaa kennuu, dheereessuu fi haquu", "Waliigaltee walsimsiisa pilaanii raawwachiisuu", "Mirkaneessa dizaayinii haaraa, fooyya'iinsa, babal'ifannaa fi ijaarsa xumurame (as built)", "Hayyama ijaarsaa, fooyya'iinsa pilaanii, babal'ifannaa, mirga itti fayyadama gamoo, diigiinsa gamoo kennuu fi haaromsuu", "Sadarkaa ijaarsaa irra jiru kennuu", "Sanadoota caalbaasii ijaarsa gamoo mirkaneessuu", "Gahumsa hayyama ijaarsaa haaromsuu"]
+            },
+            {
+                id: 9,
+                name_or: "Galii",
+                name_am: "ገቢ",
+                name_en: "Revenue",
+                services_or: ["Sassaabbii Galii idilee", "Sassaabii Galii M/Qopheessaa", "Lakk TIN kennuu", "Xalayaa deggersaa maxxansa nagahee kaffalaa gibiraa kennuu (Kaffalaa gibira A fi B)", "Murtii Taaksiifi Kaffaltii VAT, TOT fi witholding galmeessuu", "Waraqaa qulqullinaa idaarraa biliisa ta'uu ibsu kennuu"]
+            },
+            {
+                id: 10,
+                name_or: "Mana Qopheess.",
+                name_am: "የቤት ግንባታ",
+                name_en: "House Construction",
+                services_or: ["Waraqaa eenyummaa biyyoolessaa (National ID)", "Deggersa bu'uuraalee misoomaa (ibsaa, daandii, bishaan...) kennuu", "Gurmii waldaalee lafa mana jirreenyaa", "Waliigaltee mana mootummaa raawwachuu, haaromsuu fi kaffaltii raawwachiisuu (kiraafi dhaabbiin dabarsuu)", "Hayyama suphaa mana mootummaa kennuu", "Hayyama mana gandaa deebisanii misoomsuu (diiganii) kennuu fi haaromsuu", "Waliigaltee kireessaa fi kireeffataa kennuu", "Hayyama tajaajila Qalmaa kennuu (lakk. Qeeraa kennuu)"]
+            },
+            {
+                id: 11,
+                name_or: "Fayyaa",
+                name_am: "ጤና",
+                name_en: "Health",
+                services_or: ["Waraqaa qulqullinaa gahumsa dhaabilee daldalaa kennuu fi haaromsuu", "Hayyama manneen yaalaa dhuunfaa kennuu fi haaromsuu", "Inshuuraansii fayyaa hawaasaa kennuu fi haaromsuu", "Hayyama ogummaa haaromsuu"]
+            },
+            {
+                id: 12,
+                name_or: "Kominikeeshinii",
+                name_am: "ኮሙኒኬሽን",
+                name_en: "Communication",
+                services_or: ["Eeyyama barjaalee fi beeksiisa sagalee kennuu"]
+            },
+            {
+                id: 13,
+                name_or: "Qonna Magaalaa /WHG/",
+                name_am: "የከተማ ግብርና /WHG/",
+                name_en: "Urban Agriculture /WHG/",
+                services_or: ["Gurmii waldaalee WHG mirkaneessuu", "Xalayaa deggarsaa adda addaa waldaaleefi Walitti hidhamiinsa gabaa waldaalee Hojii Gamtaa uumuu kennuu", "Waldaalee Hojii Gamtaa invastimentiitti ce'aniif xalayaa deggersaa kennuu", "Xalayaa deggarsaa Qonnaan bulaa investimentiitti ce'aniifi walitti hidhamiinsa gabaa uumuu kennuu", "Hayyama Ogummaa Galtee Qonnaa Kennuu,Haaromsuu fi Haquu", "Hayyama Mirk. Gahumsa Ogummaa Manaa Qalmaa Kennuu fi haaromsuu", "Hayyama mirk. gahumsa ogummaa horsiisa horii Aannaanii fi foonii kennuu"]
+            },
+            {
+                id: 14,
+                name_or: "Eegumsa Naannoo",
+                name_am: "የአካባቢ ጥበቃ",
+                name_en: "Environmental Protection",
+                services_or: ["Mirkaneessa qorannoo haala dhiibbaa naannoo", "Agarsiiftuu adeemsa hojii (TOR) sakatta'iinsa dhiibbaa naannoo fi hawaasaa mirkaneessuu", "Xalayaa Darbii Bu'aa Bosonaa"]
+            },
+            {
+                id: 15,
+                name_or: "Geejjiba",
+                name_am: "ገጅብ",
+                name_en: "Geejjiba",
+                services_or: ["Gahumsa ogummaa dhaabbata leenjii konkolaachisummaa mirkaneessuu", "Mallattoo maxxantuu (boolloo) waggaa haaraa kennuu, haaromsuu fi haquu", "Hayyama konkolaachisaa kennuu fi haaromsuu (konkol. fi opiratara)", "Hayyama tajaajila geejibaa ykn haaromsa eeyyama waldaa kennuu", "Hayyama Bobbii Konkoolaataa kennuu", "Galmeessa waraqaa ragaa A/Qabeenyummaa konkolaataa kennuu", "Jijjiirraa maqaa abbaa qabeenyummaa raawwachuu", "Ragaalee konkolaataa fi konkolaachisaa badan haaraan bakka buusuu", "Dhorka konkolaataa raawwachuu fi haquu", "Kaffaltii boolloo raawwachuu", "Kaffaltii taarifaa raawwachiisuu", "Kaffaltii adabbii seera darbitootaa", "Galmeessa ragaa dhuunfaa dhorkuu, fooyyessuufi kaasuu"]
+            },
+            {
+                id: 16,
+                name_or: "Abbaa Alangaa",
+                name_am: "አባ አላንጋ",
+                name_en: "Abbaa Alangaa",
+                services_or: ["Galmeessaa waldaalee daldalaa IMX", "Galmeessa waldaa haawaasaa siivilii", "Ragaalee waldaalee galmeessuu", "Waliigaltee galmeessuu", "Bakka bu'ummaa galmeessuu fi kennuu", "Galmeessa waliigaltee liqii", "Waliigaltee mirkaneessuu", "Sanadootaa adda addaa mirkaneessuu", "Mirkaneessa seera qabeessummaa turjumaanaa kennuu", "Waliigaltee pirojektii gulaaluu"]
+            },
+            {
+                id: 17,
+                name_or: "Invastimentii",
+                name_am: "ኢንቨስትመንት",
+                name_en: "Investment",
+                services_or: ["Simannaa pirojektiiwwan haaraa", "Hayyama invastimantii kennuu, haaromsu, babal'isu fi addan kutuu", "Waliigaltee invastimantii galchisisuu", "Babal'ifannaa pirojektiifi jijjiirraa maqaa murtee boodaa", "Xalayaa deggersa ashuuraa kennuu", "Bakka bu'ummaa invastimentii galmeessuu", "Jijjiirraa gosa pirojektiio"]
+            },
+            {
+                id: 18,
+                name_or: "Kom/Tuurizimii",
+                name_am: "ኮም/ቱሪዝም",
+                name_en: "Commerce/Tourism",
+                services_or: ["Mirkaneessa gahumsa dhaabilee tuurizimii (hoteelotaa.fi idowan haw.tuur.)", "Xalayaa deggera adda addaa kennuu"]
+            },
+            {
+                id: 19,
+                name_or: "Barnoota",
+                name_am: "ትምህርት",
+                name_en: "Education",
+                services_or: ["Xalayaa deg. B/sotaa fi hoggansa M/Barumsaaf adda adda kennuu", "Hayyama Gahumsa Manneen Barnoota Dhuunfaa fi miti mootummaa Kennuu, Haaromsuu, Kan bade bakka buusuufi deebisuu (Mana Barnootaa BSTDfi sadarkaa tokkoffaa 1-8)", "Tajaajila jijjiirraa barsiisotaa/hooggantoota manneen barnootaa", "Hayyama gahumsa manneen barnoota dhuunfaa kennuu, haaromsuu fi haquu"]
+            },
+            {
+                id: 20,
+                name_or: "Poolisii",
+                name_am: "ፖሊስ",
+                name_en: "Police",
+                services_or: ["Xalayaa adda addaa qaama ilaaluuf barreessuu"]
+            },
+            {
+                id: 21,
+                name_or: "Aadaa",
+                name_am: "ባህል",
+                name_en: "Culture",
+                services_or: ["Hayyama gahumsa ogummaa dhaabilee aadaa kennuu, haaromsuu, haquu"]
+            },
+            {
+                id: 22,
+                name_or: "Maallaqa 11",
+                name_am: "ገንዘብ 11",
+                name_en: "Finance 11",
+                services_or: ["Kaffaltii projektii raawwachuu", "Kafaltii bittaa meeshaalee fi tajaajilaa raawwachuu", "Kaffaltii beenyaa raawwachuu"]
+            },
+            {
+                id: 23,
+                name_or: "B/Gonofaa 10",
+                name_am: "ቢ/ጎንፋ 10",
+                name_en: "B/Gonofaa 10",
+                services_or: ["Buusii miseensummaa sassaabuu", "Sassaabbii galii Buusaa Gonofaa"]
+            },
+            {
+                id: 24,
+                name_or: "Taj.B/Dhug.fi Dhangalaáa",
+                name_am: "ታጅ/ብ/ጡጥ እና ድንጋሌ",
+                name_en: "Construction/Stone and Gravel",
+                services_or: ["Biilii Bishaanii gurguruu", "Kaffaltii tilmaama meeshaa bishaanii raawwachuu"]
+            },
+            {
+                id: 25,
+                name_or: "Tajaajila Ibsaa",
+                name_am: "የአገልግሎት ማስታወቂያ",
+                name_en: "Service Announcement",
+                services_or: ["Kaffaltii tajaajila ibsaa raawwachuu"]
+            },
+            {
+                id: 26,
+                name_or: "ETC",
+                name_am: "ኢ.ቲ.ሲ",
+                name_en: "ETC",
+                services_or: ["Tajaajila Itiyo telekom"]
+            },
+            {
+                id: 27,
+                name_or: "Baankii",
+                name_am: "ባንክ",
+                name_en: "Bank",
+                services_or: ["Kaffaltiiwwan foddaawwan irraa ajajaan mirkaneessuun akkaawuntii ajajametti galchuu", "Kaffaltiiwwan adda addaa wiirtuudhaan ajajaman raawwachuu"]
+            }
+        ];
+
+        let currentLanguage = 'en';
+        let currentView = 'organizations';
+
+        function selectLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Update UI text
+            document.getElementById('orgTitle').textContent = translations[lang].orgTitle;
+            document.getElementById('backText').textContent = translations[lang].back;
+            document.getElementById('searchInput').placeholder = translations[lang].searchPlaceholder;
+            
+            // Show main content
+            document.getElementById('languageSection').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+            
+            // Load organizations
+            displayOrganizations();
+        }
+
+        function displayOrganizations(filter = '') {
+            const orgGrid = document.getElementById('orgGrid');
+            orgGrid.innerHTML = '';
+            
+            const filteredOrgs = organizations.filter(org => {
+                const name = org[`name_${currentLanguage}`] || org.name_en;
+                return name.toLowerCase().includes(filter.toLowerCase());
+            });
+            
+            filteredOrgs.forEach(org => {
+                const name = org[`name_${currentLanguage}`] || org.name_en;
+                const services = org[`services_${currentLanguage}`] || org.services_or || [];
+                
+                const card = document.createElement('div');
+                card.className = 'org-card';
+                card.onclick = () => showServices(org);
+                
+                card.innerHTML = `
+                    <div class="org-name">${name}</div>
+                    <div class="counter">${services.length} ${translations[currentLanguage].servicesCount}</div>
+                `;
+                
+                orgGrid.appendChild(card);
+            });
+            
+            // Update title with count
+            document.getElementById('orgTitle').textContent = 
+                `${translations[currentLanguage].orgTitle} (${filteredOrgs.length})`;
+        }
+
+        function showServices(org) {
+            const name = org[`name_${currentLanguage}`] || org.name_en;
+            const services = org[`services_${currentLanguage}`] || org.services_or || [];
+            
+            // Update titles
+            document.getElementById('serviceTitle').textContent = name;
+            document.getElementById('serviceCount').textContent = 
+                `${services.length} ${translations[currentLanguage].servicesCount}`;
+            
+            // Display services
+            const servicesList = document.getElementById('servicesList');
+            servicesList.innerHTML = '';
+            
+            if (services.length === 0) {
+                servicesList.innerHTML = `<div class="service-item">${translations[currentLanguage].noServices}</div>`;
+            } else {
+                services.forEach(service => {
+                    const item = document.createElement('div');
+                    item.className = 'service-item';
+                    item.textContent = service;
+                    servicesList.appendChild(item);
+                });
+            }
+            
+            // Switch view
+            document.getElementById('organizationsList').style.display = 'none';
+            document.getElementById('servicesView').style.display = 'block';
+            currentView = 'services';
+        }
+
+        function searchOrganizations() {
+            const searchTerm = document.getElementById('searchInput').value;
+            displayOrganizations(searchTerm);
+        }
+
+        function goBack() {
+            if (currentView === 'services') {
+                // Go back to organizations
+                document.getElementById('servicesView').style.display = 'none';
+                document.getElementById('organizationsList').style.display = 'block';
+                document.getElementById('searchInput').value = '';
+                displayOrganizations();
+                currentView = 'organizations';
+            } else {
+                // Go back to language selection
+                document.getElementById('mainContent').style.display = 'none';
+                document.getElementById('languageSection').style.display = 'flex';
+                currentView = 'organizations';
+            }
+        }
+
+        // Initialize with English by default
+        window.onload = function() {
+            selectLanguage('en');
+        };
+    </script>
+</body>
+</html>

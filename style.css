@@ -1,0 +1,23 @@
+/* Additional styles if needed */
+.print-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.print-btn:hover {
+    background: #218838;
+}
+
+.stats {
+    background: #17a2b8;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    text-align: center;
+}
